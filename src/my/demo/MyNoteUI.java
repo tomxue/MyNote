@@ -8,7 +8,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
-	
+import java.nio.channels.FileChannel;	
+import java.nio.MappedByteBuffer;
+import java.nio.charset.Charset;
 
 /**
  *
@@ -24,6 +26,21 @@ public class MyNoteUI extends javax.swing.JFrame {
 	public MyNoteUI() {
 		initComponents();
 	}
+	
+	public String readFile(String path) throws IOException {
+		System.out.println(path);
+		FileInputStream stream = new FileInputStream(new File(path));
+		try {
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+			System.out.println(fc.size());
+			/* Instead of using default, pass in a decoder. */
+			return Charset.defaultCharset().decode(bb).toString();
+		} finally {
+			stream.close();
+		}
+	}
+	
 
 	// This action creates and shows a modal open-file dialog.
 	public class OpenFileAction extends AbstractAction {
@@ -43,6 +60,14 @@ public class MyNoteUI extends javax.swing.JFrame {
 
 			// Get the selected file
 			File file = chooser.getSelectedFile();
+			jTextArea1.setText(file.toString());
+
+			try{
+				jTextArea1.setText(readFile(file.toString()));
+			} catch(Exception e)
+			{
+				System.err.println(e);	
+			}
 		}
 	};
 
@@ -159,23 +184,24 @@ public class MyNoteUI extends javax.swing.JFrame {
 		System.exit(0);
         }//GEN-LAST:event_jButton2ActionPerformed
 
+	
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 		jTextArea1.setText("");
-		jTextArea1.append("Open...");
+		jTextArea1.append("Open File...");
 
 		// Create a file chooser
-		String filename = File.separator + "tmp";
-		JFileChooser fc = new JFileChooser(new File(filename));
+		//String filename = File.separator + "home/tomxue";
+		JFileChooser fc = new JFileChooser();//(new File(filename));
 
 		// Create the actions
 		Action openAction = new OpenFileAction(jframe, fc);
-
 		openAction.actionPerformed(evt);
+		
         }//GEN-LAST:event_jButton1ActionPerformed
 
         private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 		jTextArea1.setText("");
-		jTextArea1.append("Save...");
+		jTextArea1.append("Save File...");
 	
 		// Create a file chooser
 		String filename = File.separator + "tmp";
@@ -183,7 +209,6 @@ public class MyNoteUI extends javax.swing.JFrame {
 
 		// Create the actions
 		Action saveAction = new SaveFileAction(jframe, fc);
-
 		saveAction.actionPerformed(evt);
         }//GEN-LAST:event_jButton3ActionPerformed
 
