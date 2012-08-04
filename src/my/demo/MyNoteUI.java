@@ -28,12 +28,11 @@ public class MyNoteUI extends javax.swing.JFrame {
 	}
 	
 	public String readFile(String path) throws IOException {
-		System.out.println(path);
+		System.out.println("The opened file path is: "+path);
 		FileInputStream stream = new FileInputStream(new File(path));
 		try {
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-			System.out.println(fc.size());
 			/* Instead of using default, pass in a decoder. */
 			return Charset.defaultCharset().decode(bb).toString();
 		} finally {
@@ -187,11 +186,11 @@ public class MyNoteUI extends javax.swing.JFrame {
 	
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 		jTextArea1.setText("");
-		jTextArea1.append("Open File...");
+		jTextArea1.append("Opening File...");
 
 		// Create a file chooser
-		//String filename = File.separator + "home/tomxue";
-		JFileChooser fc = new JFileChooser();//(new File(filename));
+		String filename = File.separator + "home/tomxue";	// the default opened path
+		JFileChooser fc = new JFileChooser(new File(filename));
 
 		// Create the actions
 		Action openAction = new OpenFileAction(jframe, fc);
@@ -201,7 +200,7 @@ public class MyNoteUI extends javax.swing.JFrame {
 
         private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 		jTextArea1.setText("");
-		jTextArea1.append("Save File...");
+		jTextArea1.append("Saving File...");
 	
 		// Create a file chooser
 		String filename = File.separator + "tmp";
