@@ -19,6 +19,7 @@ import java.nio.charset.Charset;
 public class MyNoteUI extends javax.swing.JFrame {
 
 	JFrame jframe;
+	JFileChooser fc;
 
 	/**
 	 * Creates new form MyNoteUI
@@ -59,7 +60,7 @@ public class MyNoteUI extends javax.swing.JFrame {
 
 			// Get the selected file
 			File file = chooser.getSelectedFile();
-			jTextArea1.setText(file.toString());
+			//jTextArea1.setText("The opended file path is: "+file.toString());
 
 			try{
 				jTextArea1.setText(readFile(file.toString()));
@@ -70,13 +71,43 @@ public class MyNoteUI extends javax.swing.JFrame {
 		}
 	};
 
-	// This action creates and shows a modal save-file dialog.
 	public class SaveFileAction extends AbstractAction {
 
 		JFileChooser chooser;
 		JFrame frame;
 
 		SaveFileAction(JFrame frame, JFileChooser chooser) {
+			super("Save...");
+			this.chooser = chooser;
+			this.frame = frame;
+		}
+
+		public void actionPerformed(ActionEvent evt) {
+
+			// Get the selected file
+			File file = fc.getSelectedFile();
+			
+			try {
+				// Create file 
+				System.out.println("The file path is: "+file.toString());
+				FileWriter fstream = new FileWriter(file.toString());
+				BufferedWriter out = new BufferedWriter(fstream);
+				out.write(jTextArea1.getText());
+				//Close the output stream
+				out.close();
+			} catch (Exception e) {//Catch exception if any
+				System.err.println("Error: " + e.getMessage());
+			}	
+		}
+	};
+
+	// This action creates and shows a modal save-file dialog.
+	public class SaveAsFileAction extends AbstractAction {
+
+		JFileChooser chooser;
+		JFrame frame;
+
+		SaveAsFileAction(JFrame frame, JFileChooser chooser) {
 			super("Save As...");
 			this.chooser = chooser;
 			this.frame = frame;
@@ -88,6 +119,18 @@ public class MyNoteUI extends javax.swing.JFrame {
 
 			// Get the selected file
 			File file = chooser.getSelectedFile();
+			
+			try {
+				// Create file 
+				System.out.println("The file path is: "+file.toString());
+				FileWriter fstream = new FileWriter(file.toString());
+				BufferedWriter out = new BufferedWriter(fstream);
+				out.write(jTextArea1.getText());
+				//Close the output stream
+				out.close();
+			} catch (Exception e) {//Catch exception if any
+				System.err.println("Error: " + e.getMessage());
+			}	
 		}
 	};
 
@@ -107,6 +150,7 @@ public class MyNoteUI extends javax.swing.JFrame {
                 jTextArea1 = new javax.swing.JTextArea();
                 jButton2 = new javax.swing.JButton();
                 jButton3 = new javax.swing.JButton();
+                jButton4 = new javax.swing.JButton();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,10 +172,17 @@ public class MyNoteUI extends javax.swing.JFrame {
                         }
                 });
 
-                jButton3.setText("Save");
+                jButton3.setText("Save as");
                 jButton3.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                                 jButton3ActionPerformed(evt);
+                        }
+                });
+
+                jButton4.setText("Save");
+                jButton4.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                jButton4ActionPerformed(evt);
                         }
                 });
 
@@ -142,14 +193,16 @@ public class MyNoteUI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jButton1)
-                                                .addGap(42, 42, 42)
+                                                .addGap(35, 35, 35)
+                                                .addComponent(jButton4)
+                                                .addGap(32, 32, 32)
                                                 .addComponent(jButton3)
-                                                .addGap(44, 44, 44)
+                                                .addGap(29, 29, 29)
                                                 .addComponent(jButton2)
-                                                .addGap(0, 493, Short.MAX_VALUE)))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
                 );
                 jPanel1Layout.setVerticalGroup(
@@ -159,7 +212,8 @@ public class MyNoteUI extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButton1)
                                         .addComponent(jButton2)
-                                        .addComponent(jButton3))
+                                        .addComponent(jButton3)
+                                        .addComponent(jButton4))
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                                 .addContainerGap())
@@ -182,15 +236,15 @@ public class MyNoteUI extends javax.swing.JFrame {
         private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 		System.exit(0);
         }//GEN-LAST:event_jButton2ActionPerformed
-
 	
+	// Open
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 		jTextArea1.setText("");
 		jTextArea1.append("Opening File...");
 
 		// Create a file chooser
 		String filename = File.separator + "home/tomxue";	// the default opened path
-		JFileChooser fc = new JFileChooser(new File(filename));
+		fc = new JFileChooser(new File(filename));
 
 		// Create the actions
 		Action openAction = new OpenFileAction(jframe, fc);
@@ -198,18 +252,30 @@ public class MyNoteUI extends javax.swing.JFrame {
 		
         }//GEN-LAST:event_jButton1ActionPerformed
 
+	// Save as
         private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-		jTextArea1.setText("");
-		jTextArea1.append("Saving File...");
+		//jTextArea1.setText("");
+		//jTextArea1.append("Save as...");
 	
 		// Create a file chooser
-		String filename = File.separator + "tmp";
-		JFileChooser fc = new JFileChooser(new File(filename));
+		String filename = File.separator + "home/tomxue";	// the default opened path
+		fc = new JFileChooser(new File(filename));
+
+		// Create the actions
+		Action saveAction = new SaveAsFileAction(jframe, fc);
+		saveAction.actionPerformed(evt);
+        }//GEN-LAST:event_jButton3ActionPerformed
+
+	// Save
+        private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+                /// Create a file chooser
+		String filename = File.separator + "home/tomxue";	// the default opened path
+		//fc = new JFileChooser(new File(filename));
 
 		// Create the actions
 		Action saveAction = new SaveFileAction(jframe, fc);
 		saveAction.actionPerformed(evt);
-        }//GEN-LAST:event_jButton3ActionPerformed
+        }//GEN-LAST:event_jButton4ActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -249,6 +315,7 @@ public class MyNoteUI extends javax.swing.JFrame {
         private javax.swing.JButton jButton1;
         private javax.swing.JButton jButton2;
         private javax.swing.JButton jButton3;
+        private javax.swing.JButton jButton4;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JTextArea jTextArea1;
