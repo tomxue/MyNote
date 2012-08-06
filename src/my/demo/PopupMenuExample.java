@@ -31,19 +31,19 @@ public class PopupMenuExample extends JPanel {
  };
 
     JMenuItem item;
-    popup.add(item = new JMenuItem("Left", new ImageIcon("1.gif")));
+    popup.add(item = new JMenuItem("Copy", new ImageIcon("1.gif")));
     item.setHorizontalTextPosition(JMenuItem.RIGHT);
     item.addActionListener(menuListener);
     
-    popup.add(item = new JMenuItem("Center", new ImageIcon("2.gif")));
+    popup.add(item = new JMenuItem("Cut", new ImageIcon("2.gif")));
     item.setHorizontalTextPosition(JMenuItem.RIGHT);
     item.addActionListener(menuListener);
     
-    popup.add(item = new JMenuItem("Right", new ImageIcon("3.gif")));
+    popup.add(item = new JMenuItem("Paste", new ImageIcon("3.gif")));
     item.setHorizontalTextPosition(JMenuItem.RIGHT);
     item.addActionListener(menuListener);
     
-    popup.add(item = new JMenuItem("Full", new ImageIcon("4.gif")));
+    popup.add(item = new JMenuItem("Select All", new ImageIcon("4.gif")));
     item.setHorizontalTextPosition(JMenuItem.RIGHT);
     item.addActionListener(menuListener);
     
