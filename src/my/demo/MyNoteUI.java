@@ -4,6 +4,7 @@
  */
 package my.demo;
 
+import java.awt.Frame;
 import java.awt.event.*;
 import java.io.*;
 import java.nio.MappedByteBuffer;
@@ -17,7 +18,6 @@ import javax.swing.*;
  */
 public class MyNoteUI extends javax.swing.JFrame {
 
-	JFrame jFrame;
 	JFileChooser fc;
 
 	/**
@@ -25,13 +25,11 @@ public class MyNoteUI extends javax.swing.JFrame {
 	 */
 	public MyNoteUI() {
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setContentPane(new PopupMenuExample());
+		setTitle("My NoteUI");
+		
 		initComponents();
-
-		jFrame = new javax.swing.JFrame();
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setContentPane(new PopupMenuExample());
-		jFrame.setTitle("My NoteUI");
-
 	}
 	
 	public String readFile(String path) throws IOException {
@@ -268,7 +266,6 @@ public class MyNoteUI extends javax.swing.JFrame {
 		// Create the actions
 		Action openAction = new OpenFileAction(myframe, fc);
 		openAction.actionPerformed(evt);
-		
         }//GEN-LAST:event_jButton1ActionPerformed
 
 	// Save as
